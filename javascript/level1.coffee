@@ -1,5 +1,7 @@
 gamejs = require('gamejs')
 
+
+
 gamejs.preload(["images/char.png","images/wall.png","images/level1_mapmask.png"])
 
 #globals…

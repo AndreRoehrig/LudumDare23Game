@@ -1,5 +1,5 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, display, draw, gamejs, handleEvent, key_down, key_left, key_right, key_up, main, makeWall, wallmask;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, display, draw, gamejs, handleEvent, key_down, key_left, key_right, key_up, level1, makeWall, wallmask;
 
   gamejs = require('gamejs');
 
@@ -112,7 +112,7 @@
     return _results;
   };
 
-  main = function() {
+  level1 = function() {
     var charimg, level1maskimg;
     charimg = gamejs.image.load('images/char.png');
     level1maskimg = gamejs.image.load('images/level1_mapmask.png');
@@ -125,6 +125,6 @@
     return gamejs.time.fpsCallback(draw, this, 30);
   };
 
-  gamejs.ready(main);
+  gamejs.ready(level1);
 
 }).call(this);

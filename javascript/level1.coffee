@@ -75,7 +75,7 @@ makeWall = ->
         i += 1
         if i < 19 then display.blit(gamejs.image.load("images/wall.png"),[0,i*32])
         if i < 19 then display.blit(gamejs.image.load("images/wall.png"),[768,i*32])
-main = ->
+level1 = ->
     #collision vars
     charimg = gamejs.image.load('images/char.png')
     level1maskimg = gamejs.image.load('images/level1_mapmask.png')
@@ -90,4 +90,4 @@ main = ->
    
 
 
-gamejs.ready(main)
+gamejs.ready(level1)

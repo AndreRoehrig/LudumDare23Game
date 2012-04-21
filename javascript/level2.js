@@ -1,9 +1,9 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, counter, display, draw, gamejs, key_down, key_left, key_right, key_up, main, wallmask;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, charsize, counter, display, draw, gamejs, key_down, key_left, key_right, key_up, main, wallmask;
 
   gamejs = require('gamejs');
 
-  gamejs.preload(["images/char.png", "images/wall.png", "images/level1_mapmask.png", "images/ldsizes/char63.png", "images/ldsizes/char62.png", "images/ldsizes/char61.png", "images/ldsizes/char60.png", "images/ldsizes/char59.png", "images/ldsizes/char58.png"]);
+  gamejs.preload(["images/char.png", "images/wall.png", "images/level1_mapmask.png", "images/ldsizes/char63.png", "images/ldsizes/char62.png", "images/ldsizes/char61.png", "images/ldsizes/char60.png", "images/ldsizes/char59.png", "images/ldsizes/char50.png"]);
 
   counter = 0;
 
@@ -18,6 +18,8 @@
   charmask = 0;
 
   wallmask = 0;
+
+  charsize = 50;
 
   char_x = 100;
 
@@ -47,24 +49,7 @@
     counter += 1;
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0);
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 200], [32, 200]), 0);
-    if (counter > 30) {
-      charSprite.image = gamejs.image.load("images/ldsizes/char63.png");
-    }
-    if (counter > 60) {
-      charSprite.image = gamejs.image.load("images/ldsizes/char62.png");
-    }
-    if (counter > 120) {
-      charSprite.image = gamejs.image.load("images/ldsizes/char61.png");
-    }
-    if (counter > 150) {
-      charSprite.image = gamejs.image.load("images/ldsizes/char60.png");
-    }
-    if (counter > 180) {
-      charSprite.image = gamejs.image.load("images/ldsizes/char59.png");
-    }
-    if (counter > 210) {
-      charSprite.image = gamejs.image.load("images/ldsizes/char58.png");
-    }
+    charSprite.image = gamejs.image.load("images/ldsizes/char" + charsize + ".png");
     charSprite.rect = new gamejs.Rect([char_x, char_y]);
     return charSprite.draw(display);
   };

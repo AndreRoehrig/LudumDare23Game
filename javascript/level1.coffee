@@ -1,6 +1,6 @@
 gamejs = require('gamejs')
 
-gamejs.preload(["images/char.png","images/wall.png"])
+gamejs.preload(["images/char.png","images/wall.png","images/level1_mapmask.png"])
 
 #globals…
 key_down = 0
@@ -46,15 +46,15 @@ draw = ->
     char_y += char_ver_speed
     
     #collision
-    relativeOffset = gamejs.utils.vectors.subtract([char_x,char_y], [char_x,char_y])  
-    hasMaskOverlap = charmask.overlap(charmask, relativeOffset)
-    alert hasMaskOverlap
-
+    relativeOffset = gamejs.utils.vectors.subtract([0,0], [char_x,char_y])  
+    hasMaskOverlap = charmask.overlap(wallmask, relativeOffset)
+    if hasMaskOverlap then alert ("Kollision!!!!111!")
+    
     charSprite.rect = new gamejs.Rect([char_x,char_y])
     charSprite.draw(display)
 
 charSprite = new gamejs.sprite.Sprite()
-charSprite.rect = new gamejs.Rect([char_ver_acc,500])
+charSprite.rect = 0
 
 handleEvent = (event) ->
     
@@ -78,8 +78,9 @@ makeWall = ->
 main = ->
     #collision vars
     charimg = gamejs.image.load('images/char.png')
+    level1maskimg = gamejs.image.load('images/level1_mapmask.png')
     charmask = gamejs.mask.fromSurface(charimg)
-    wallmask = gamejs.mask.Mask([800,32])
+    wallmask = gamejs.mask.fromSurface(level1maskimg)
 
     makeWall()
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)

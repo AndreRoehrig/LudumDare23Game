@@ -1,7 +1,7 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, display, draw, gamejs, handleEvent, key_down, key_left, key_right, key_up, main, makeWall;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, display, draw, gamejs, handleEvent, key_down, key_left, key_right, key_up, main, makeWall, wallmask;
 
-  gamejs = require("gamejs");
+  gamejs = require('gamejs');
 
   gamejs.preload(["images/char.png", "images/wall.png"]);
 
@@ -12,6 +12,10 @@
   key_left = 0;
 
   key_right = 0;
+
+  charmask = 0;
+
+  wallmask = 0;
 
   char_x = 100;
 
@@ -32,7 +36,7 @@
   display = gamejs.display.setMode([800, 650]);
 
   draw = function() {
-    var event, _i, _len, _ref;
+    var event, hasMaskOverlap, relativeOffset, _i, _len, _ref;
     if (key_up === 1) char_ver_acc -= 0.3;
     if (key_down === 1) char_ver_acc += 0.3;
     if (key_right === 1) char_hor_acc += 0.3;
@@ -44,14 +48,17 @@
     }
     char_ver_acc = char_ver_acc / 1.3;
     char_hor_acc = char_hor_acc / 1.3;
-    gamejs.draw.rect(display, '#aaaaaa', new gamejs.Rect([32, 32], [736, 536]), 0);
-    gamejs.draw.rect(display, '#aaaaaa', new gamejs.Rect([768, 200], [32, 200]), 0);
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0);
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 200], [32, 200]), 0);
     char_ver_speed += char_ver_acc;
     char_ver_speed = char_ver_speed / 1.3;
     char_x += char_hor_speed;
     char_hor_speed += char_hor_acc;
     char_hor_speed = char_hor_speed / 1.3;
     char_y += char_ver_speed;
+    relativeOffset = gamejs.utils.vectors.subtract([char_x, char_y], [char_x, char_y]);
+    hasMaskOverlap = charmask.overlap(charmask, relativeOffset);
+    alert(hasMaskOverlap);
     charSprite.rect = new gamejs.Rect([char_x, char_y]);
     return charSprite.draw(display);
   };
@@ -106,7 +113,13 @@
   };
 
   main = function() {
+    var charimg;
+    charimg = gamejs.image.load('images/char.png');
+    charmask = gamejs.mask.fromSurface(charimg);
+    wallmask = gamejs.mask.Mask([800, 32]);
     makeWall();
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0);
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 200], [32, 200]), 0);
     charSprite.image = gamejs.image.load("images/char.png");
     return gamejs.time.fpsCallback(draw, this, 30);
   };

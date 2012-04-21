@@ -1,4 +1,5 @@
-gamejs = require("gamejs")
+gamejs = require('gamejs')
+
 gamejs.preload(["images/char.png","images/wall.png"])
 
 #globals…
@@ -6,6 +7,10 @@ key_down = 0
 key_up = 0
 key_left = 0
 key_right = 0
+
+#
+charmask = 0
+wallmask = 0
 
 
 char_x = 100
@@ -31,14 +36,20 @@ draw = ->
     handleEvent(event) for event in gamejs.event.get()
     char_ver_acc = char_ver_acc / 1.3
     char_hor_acc = char_hor_acc / 1.3
-    gamejs.draw.rect(display, '#aaaaaa', new gamejs.Rect([32, 32], [736, 536]), 0)
-    gamejs.draw.rect(display, '#aaaaaa', new gamejs.Rect([768, 200], [32, 200]), 0)
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 200], [32, 200]), 0)
     char_ver_speed += char_ver_acc
     char_ver_speed = char_ver_speed / 1.3
     char_x += char_hor_speed
     char_hor_speed += char_hor_acc
     char_hor_speed = char_hor_speed / 1.3
     char_y += char_ver_speed
+    
+    #collision
+    relativeOffset = gamejs.utils.vectors.subtract([char_x,char_y], [char_x,char_y])  
+    hasMaskOverlap = charmask.overlap(charmask, relativeOffset)
+    alert hasMaskOverlap
+
     charSprite.rect = new gamejs.Rect([char_x,char_y])
     charSprite.draw(display)
 
@@ -65,7 +76,14 @@ makeWall = ->
         if i < 19 then display.blit(gamejs.image.load("images/wall.png"),[0,i*32])
         if i < 19 then display.blit(gamejs.image.load("images/wall.png"),[768,i*32])
 main = ->
+    #collision vars
+    charimg = gamejs.image.load('images/char.png')
+    charmask = gamejs.mask.fromSurface(charimg)
+    wallmask = gamejs.mask.Mask([800,32])
+
     makeWall()
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 200], [32, 200]), 0)
     charSprite.image = gamejs.image.load("images/char.png")
     gamejs.time.fpsCallback(draw, this, 30)
    

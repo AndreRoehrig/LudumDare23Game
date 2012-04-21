@@ -8,8 +8,8 @@ key_left = 0
 key_right = 0
 
 
-char_x = 0
-char_y = 0
+char_x = 100
+char_y = 268
 char_ver_acc = 0
 char_ver_speed = 0
 char_hor_acc = 0
@@ -19,7 +19,7 @@ char_hor_speed = 0
 charSprite = new gamejs.sprite.Sprite()
 charSprite.rect = new gamejs.Rect([250,500])
 
-display = gamejs.display.setMode([800,600])
+display = gamejs.display.setMode([800,650])
 
 
  
@@ -31,7 +31,8 @@ draw = ->
     handleEvent(event) for event in gamejs.event.get()
     char_ver_acc = char_ver_acc / 1.3
     char_hor_acc = char_hor_acc / 1.3
-    display.clear()
+    gamejs.draw.rect(display, '#aaaaaa', new gamejs.Rect([32, 32], [768, 536]), 0)
+    
     char_ver_speed += char_ver_acc
     char_ver_speed = char_ver_speed / 1.3
     char_x += char_hor_speed
@@ -55,8 +56,15 @@ handleEvent = (event) ->
     if event.key == gamejs.event.K_RIGHT and event.type == gamejs.event.KEY_UP then key_right = 0
     if event.key == gamejs.event.K_LEFT  and event.type == gamejs.event.KEY_UP then key_left = 0
 
+makeWall = ->
+    i = 0
+    while i < 32 
+        display.blit(gamejs.image.load("images/wall.png"),[i*32,0])
+        display.blit(gamejs.image.load("images/wall.png"),[i*32,568])
+        i += 1
+        if i < 19 then display.blit(gamejs.image.load("images/wall.png"),[0,i*32])
 main = ->
-    
+    makeWall()
     charSprite.image = gamejs.image.load("images/char.png")
     gamejs.time.fpsCallback(draw, this, 60)
    

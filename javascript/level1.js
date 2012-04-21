@@ -1,5 +1,5 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, display, draw, gamejs, handleEvent, key_down, key_left, key_right, key_up, main;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, display, draw, gamejs, handleEvent, key_down, key_left, key_right, key_up, main, makeWall;
 
   gamejs = require("gamejs");
 
@@ -13,9 +13,9 @@
 
   key_right = 0;
 
-  char_x = 0;
+  char_x = 100;
 
-  char_y = 0;
+  char_y = 268;
 
   char_ver_acc = 0;
 
@@ -29,7 +29,7 @@
 
   charSprite.rect = new gamejs.Rect([250, 500]);
 
-  display = gamejs.display.setMode([800, 600]);
+  display = gamejs.display.setMode([800, 650]);
 
   draw = function() {
     var event, _i, _len, _ref;
@@ -44,7 +44,7 @@
     }
     char_ver_acc = char_ver_acc / 1.3;
     char_hor_acc = char_hor_acc / 1.3;
-    display.clear();
+    gamejs.draw.rect(display, '#aaaaaa', new gamejs.Rect([32, 32], [768, 536]), 0);
     char_ver_speed += char_ver_acc;
     char_ver_speed = char_ver_speed / 1.3;
     char_x += char_hor_speed;
@@ -86,7 +86,25 @@
     }
   };
 
+  makeWall = function() {
+    var i, _results;
+    i = 0;
+    _results = [];
+    while (i < 32) {
+      display.blit(gamejs.image.load("images/wall.png"), [i * 32, 0]);
+      display.blit(gamejs.image.load("images/wall.png"), [i * 32, 568]);
+      i += 1;
+      if (i < 19) {
+        _results.push(display.blit(gamejs.image.load("images/wall.png"), [0, i * 32]));
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
   main = function() {
+    makeWall();
     charSprite.image = gamejs.image.load("images/char.png");
     return gamejs.time.fpsCallback(draw, this, 60);
   };

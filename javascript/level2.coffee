@@ -2,7 +2,7 @@ gamejs = require('gamejs')
 
 gamejs.preload(["images/char.png","images/wall.png","images/level1_mapmask.png"])
 
-
+counter = 0
 #globals…
 key_down = 0
 key_up = 0
@@ -29,7 +29,8 @@ display = gamejs.display.setMode([800,650])
 
 draw = ->
     handleEvent(event) for event in gamejs.event.get()
-
+    counter += 1
+    if counter > 30 then charSprite.image = gamejs.image.load("images/wall.png")
     
     charSprite.rect = new gamejs.Rect([char_x,char_y])
     charSprite.draw(display)

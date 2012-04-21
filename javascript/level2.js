@@ -1,9 +1,11 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, display, draw, gamejs, key_down, key_left, key_right, key_up, main, wallmask;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, counter, display, draw, gamejs, key_down, key_left, key_right, key_up, main, wallmask;
 
   gamejs = require('gamejs');
 
   gamejs.preload(["images/char.png", "images/wall.png", "images/level1_mapmask.png"]);
+
+  counter = 0;
 
   key_down = 0;
 
@@ -42,6 +44,8 @@
       event = _ref[_i];
       handleEvent(event);
     }
+    counter += 1;
+    if (counter > 30) charSprite.image = gamejs.image.load("images/wall.png");
     charSprite.rect = new gamejs.Rect([char_x, char_y]);
     return charSprite.draw(display);
   };

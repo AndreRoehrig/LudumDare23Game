@@ -1,9 +1,9 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, charsize, counter, display, draw, gamejs, handleEvent, key_down, key_left, key_right, key_up, level2, makeWall, wallmask;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, charsize, counter, display, draw, gamejs, handleEvent, key_down, key_left, key_right, key_up, level2, makeWall, pilledown_pos, pilleup_pos, pillmask, wallmask;
 
   gamejs = require('gamejs');
 
-  gamejs.preload(["images/char.png", "images/wall.png", "images/level1_mapmask.png", "images/level2_mapmask.png", "images/ldsizes/char64.png", "images/ldsizes/char63.png", "images/ldsizes/char62.png", "images/ldsizes/char61.png", "images/ldsizes/char60.png", "images/ldsizes/char59.png", "images/ldsizes/char58.png", "images/ldsizes/char57.png", "images/ldsizes/char56.png", "images/ldsizes/char55.png", "images/ldsizes/char54.png", "images/ldsizes/char53.png", "images/ldsizes/char52.png", "images/ldsizes/char51.png", "images/ldsizes/char50.png", "images/ldsizes/char49.png", "images/ldsizes/char48.png", "images/ldsizes/char47.png", "images/ldsizes/char46.png", "images/ldsizes/char45.png", "images/ldsizes/char44.png", "images/ldsizes/char43.png", "images/ldsizes/char42.png", "images/ldsizes/char41.png", "images/ldsizes/char40.png", "images/ldsizes/char39.png", "images/ldsizes/char38.png", "images/ldsizes/char37.png", "images/ldsizes/char36.png", "images/ldsizes/char35.png", "images/ldsizes/char34.png", "images/ldsizes/char33.png", "images/ldsizes/char32.png", "images/ldsizes/char31.png", "images/ldsizes/char30.png", "images/ldsizes/char29.png", "images/ldsizes/char28.png", "images/ldsizes/char27.png", "images/ldsizes/char26.png", "images/ldsizes/char25.png", "images/ldsizes/char24.png", "images/ldsizes/char23.png", "images/ldsizes/char22.png", "images/ldsizes/char21.png", "images/ldsizes/char20.png", "images/ldsizes/char19.png", "images/ldsizes/char18.png", "images/ldsizes/char17.png", "images/ldsizes/char16.png", "images/ldsizes/char15.png", "images/ldsizes/char14.png", "images/ldsizes/char13.png", "images/ldsizes/char12.png", "images/ldsizes/char11.png", "images/ldsizes/char10.png", "images/ldsizes/char9.png", "images/ldsizes/char8.png", "images/ldsizes/char7.png", "images/ldsizes/char6.png", "images/ldsizes/char5.png", "images/ldsizes/char4.png", "images/ldsizes/char3.png", "images/ldsizes/char2.png", "images/ldsizes/char1.png"]);
+  gamejs.preload(["images/char.png", "images/wall.png", "images/level1_mapmask.png", "images/level2_mapmask.png", "images/ldsizes/char64.png", "images/ldsizes/char63.png", "images/ldsizes/char62.png", "images/ldsizes/char61.png", "images/ldsizes/char60.png", "images/ldsizes/char59.png", "images/ldsizes/char58.png", "images/ldsizes/char57.png", "images/ldsizes/char56.png", "images/ldsizes/char55.png", "images/ldsizes/char54.png", "images/ldsizes/char53.png", "images/ldsizes/char52.png", "images/ldsizes/char51.png", "images/ldsizes/char50.png", "images/ldsizes/char49.png", "images/ldsizes/char48.png", "images/ldsizes/char47.png", "images/ldsizes/char46.png", "images/ldsizes/char45.png", "images/ldsizes/char44.png", "images/ldsizes/char43.png", "images/ldsizes/char42.png", "images/ldsizes/char41.png", "images/ldsizes/char40.png", "images/ldsizes/char39.png", "images/ldsizes/char38.png", "images/ldsizes/char37.png", "images/ldsizes/char36.png", "images/ldsizes/char35.png", "images/ldsizes/char34.png", "images/ldsizes/char33.png", "images/ldsizes/char32.png", "images/ldsizes/char31.png", "images/ldsizes/char30.png", "images/ldsizes/char29.png", "images/ldsizes/char28.png", "images/ldsizes/char27.png", "images/ldsizes/char26.png", "images/ldsizes/char25.png", "images/ldsizes/char24.png", "images/ldsizes/char23.png", "images/ldsizes/char22.png", "images/ldsizes/char21.png", "images/ldsizes/char20.png", "images/ldsizes/char19.png", "images/ldsizes/char18.png", "images/ldsizes/char17.png", "images/ldsizes/char16.png", "images/ldsizes/char15.png", "images/ldsizes/char14.png", "images/ldsizes/char13.png", "images/ldsizes/char12.png", "images/ldsizes/char11.png", "images/ldsizes/char10.png", "images/ldsizes/char9.png", "images/ldsizes/char8.png", "images/ldsizes/char7.png", "images/ldsizes/char6.png", "images/ldsizes/char5.png", "images/ldsizes/char4.png", "images/ldsizes/char3.png", "images/ldsizes/char2.png", "images/ldsizes/char1.png", "images/pill_up.png", "images/pill_down.png"]);
 
   counter = 0;
 
@@ -18,6 +18,8 @@
   charmask = 0;
 
   wallmask = 0;
+
+  pillmask = 0;
 
   charsize = 64;
 
@@ -37,10 +39,14 @@
 
   charSprite.rect = new gamejs.Rect([250, 500]);
 
+  pilleup_pos = [100, 100];
+
+  pilledown_pos = [200, 100];
+
   display = gamejs.display.setMode([800, 650]);
 
   draw = function() {
-    var event, hasMaskOverlap, relativeOffset, _i, _len, _ref;
+    var event, pilleMaskOverlap, relativeOffset_level2, relativeOffset_pilledown, wallMaskOverlap, _i, _len, _ref;
     if (key_up === 1) char_ver_acc -= 0.3;
     if (key_down === 1) char_ver_acc += 0.3;
     if (key_right === 1) char_hor_acc += 0.3;
@@ -61,11 +67,14 @@
     char_hor_speed = char_hor_speed / 1.3;
     char_y += char_ver_speed;
     charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char" + charsize + ".png"));
-    relativeOffset = gamejs.utils.vectors.subtract([0, 0], [char_x, char_y]);
-    hasMaskOverlap = charmask.overlap(wallmask, relativeOffset);
-    if (hasMaskOverlap) alert("Kollision!!!!111!");
+    relativeOffset_level2 = gamejs.utils.vectors.subtract([0, 0], [char_x, char_y]);
+    wallMaskOverlap = charmask.overlap(wallmask, relativeOffset_level2);
+    if (wallMaskOverlap) console.log("kollision");
+    relativeOffset_pilledown = gamejs.utils.vectors.subtract([200, 100], [char_x, char_y]);
+    pilleMaskOverlap = charmask.overlap(pillmask, relativeOffset_pilledown);
+    if (pilleMaskOverlap) alert("pille");
+    display.blit(gamejs.image.load("images/pill_down.png"), pilledown_pos);
     charSprite.image = gamejs.image.load("images/ldsizes/char" + charsize + ".png");
-    charsize -= 1;
     charSprite.rect = new gamejs.Rect([char_x, char_y]);
     return charSprite.draw(display);
   };
@@ -116,10 +125,14 @@
   };
 
   level2 = function() {
-    var level2maskimg;
+    var level2maskimg, pilledown, pilleup, pillmaskimg;
     level2maskimg = gamejs.image.load('images/level2_mapmask.png');
+    pillmaskimg = gamejs.image.load('images/pill_down.png');
     charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char" + charsize + ".png"));
     wallmask = gamejs.mask.fromSurface(level2maskimg);
+    pillmask = gamejs.mask.fromSurface(pillmaskimg);
+    pilleup = [100, 100];
+    pilledown = [200, 100];
     makeWall();
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0);
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 285], [32, 30]), 0);

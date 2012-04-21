@@ -1,14 +1,26 @@
 (function() {
-  var display, gamejs, main;
+  var charSprite, display, draw, gamejs, main;
 
   gamejs = require("gamejs");
 
-  gamejs.preload([]);
+  gamejs.preload(["images/char.png", "images/runner.png"]);
 
   display = gamejs.display.setMode([800, 600]);
 
+  draw = function() {
+    var runner;
+    display.clear();
+    runner = gamejs.image.load("images/char.png");
+    return charSprite.draw(display);
+  };
+
+  charSprite = new gamejs.sprite.Sprite();
+
+  charSprite.rect = new gamejs.Rect([250, 500]);
+
   main = function() {
-    return display.blit(gamejs.draw.line(display, "#ff00cc", [0, 0], [100, 100], 30));
+    charSprite.image = gamejs.image.load("images/runner.png");
+    return gamejs.time.fpsCallback(draw, this, 30);
   };
 
   gamejs.ready(main);

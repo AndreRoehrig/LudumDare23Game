@@ -31,8 +31,8 @@ draw = ->
     handleEvent(event) for event in gamejs.event.get()
     char_ver_acc = char_ver_acc / 1.3
     char_hor_acc = char_hor_acc / 1.3
-    gamejs.draw.rect(display, '#aaaaaa', new gamejs.Rect([32, 32], [768, 536]), 0)
-    
+    gamejs.draw.rect(display, '#aaaaaa', new gamejs.Rect([32, 32], [736, 536]), 0)
+    gamejs.draw.rect(display, '#aaaaaa', new gamejs.Rect([768, 200], [32, 200]), 0)
     char_ver_speed += char_ver_acc
     char_ver_speed = char_ver_speed / 1.3
     char_x += char_hor_speed
@@ -63,10 +63,11 @@ makeWall = ->
         display.blit(gamejs.image.load("images/wall.png"),[i*32,568])
         i += 1
         if i < 19 then display.blit(gamejs.image.load("images/wall.png"),[0,i*32])
+        if i < 19 then display.blit(gamejs.image.load("images/wall.png"),[768,i*32])
 main = ->
     makeWall()
     charSprite.image = gamejs.image.load("images/char.png")
-    gamejs.time.fpsCallback(draw, this, 60)
+    gamejs.time.fpsCallback(draw, this, 30)
    
 
 

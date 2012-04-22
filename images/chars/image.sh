@@ -1,7 +1,7 @@
 #!/bin/bash
-x=65
-while [ $x -le 537 ]
+x=1
+while [ $x -le 700 ]
 do
-  gm convert char.png -resize "$x"x"$x" char$x.png
+  gm convert char.png -scale "$x"x"$x" char$x.png
   x=$(( $x + 1 ))
 done

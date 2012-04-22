@@ -102,7 +102,7 @@
   display = gamejs.display.setMode([800, 600]);
 
   level4draw = function() {
-    var event, pilledownMaskOverlap_1, pilleupMaskOverlap_1, pilleupMaskOverlap_2, pilleupMaskOverlap_3, relativeOffset_level4, relativeOffset_pilledown_1, relativeOffset_pilleup_1, relativeOffset_pilleup_2, relativeOffset_pilleup_3, wallMaskOverlap, _i, _len, _ref;
+    var event, pilledownMaskOverlap_1, pilleupMaskOverlap_1, pilleupMaskOverlap_2, pilleupMaskOverlap_3, relativeOffset_level4, relativeOffset_pilledown_1, relativeOffset_pilleup_1, relativeOffset_pilleup_2, relativeOffset_pilleup_3, relativeOffset_smiley, smileyMaskOverlap, wallMaskOverlap, _i, _len, _ref;
     if (key_up === 1) char_ver_acc -= 0.3;
     if (key_down === 1) char_ver_acc += 0.3;
     if (key_right === 1) char_hor_acc += 0.3;
@@ -131,6 +131,9 @@
     relativeOffset_level4 = gamejs.utils.vectors.subtract([0, 0], [char_x, char_y]);
     wallMaskOverlap = charmask.overlap(wallmask, relativeOffset_level4);
     if (wallMaskOverlap) console.log("kollision");
+    relativeOffset_smiley = gamejs.utils.vectors.subtract([smiley_x, smiley_y], [char_x, char_y]);
+    smileyMaskOverlap = charmask.overlap(wallmask, relativeOffset_smiley);
+    if (smileyMaskOverlap) console.log("smiley");
     if (pilledown_1_dead === 0) {
       relativeOffset_pilledown_1 = gamejs.utils.vectors.subtract(pilledown_pos1, [char_x, char_y]);
       pilledownMaskOverlap_1 = charmask.overlap(pillmask, relativeOffset_pilledown_1);
@@ -162,8 +165,8 @@
     charSprite.image = gamejs.image.load("images/ldsizes/char" + charsize + ".png");
     console.log(charstate);
     charSprite.rect = new gamejs.Rect([char_x, char_y]);
-    charSprite.draw(display);
-    return smiley_Sprite.draw(display);
+    smiley_Sprite.draw(display);
+    return charSprite.draw(display);
   };
 
   handleEvent = function(event) {

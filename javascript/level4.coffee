@@ -136,6 +136,10 @@ level4draw = ->
     wallMaskOverlap = charmask.overlap(wallmask, relativeOffset_level4)
     if wallMaskOverlap then console.log "kollision"
 
+    relativeOffset_smiley = gamejs.utils.vectors.subtract([smiley_x,smiley_y],[char_x,char_y])  
+    smileyMaskOverlap = charmask.overlap(wallmask, relativeOffset_smiley)
+    if smileyMaskOverlap then console.log "smiley"
+
     
 
     ####################################################################collision pillen
@@ -177,8 +181,8 @@ level4draw = ->
     ################drawsprites##################################
     charSprite.rect = new gamejs.Rect([char_x,char_y])
     
-    charSprite.draw(display)
     smiley_Sprite.draw(display)
+    charSprite.draw(display)
   
     #############################################################
     

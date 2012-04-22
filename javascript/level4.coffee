@@ -1,6 +1,6 @@
 gamejs = require('gamejs')
 
-gamejs.preload(["images/char.png","images/wall.png","images/level1_mapmask.png","images/level2_mapmask.png","images/ldsizes/char64.png","images/ldsizes/char63.png","images/guard.png","images/boss.png","images/smiley.png"
+gamejs.preload(["images/char.png","images/wall.png","images/level1_mapmask.png","images/level2_mapmask.png","images/ldsizes/char64.png","images/ldsizes/char63.png","images/guard.png","images/boss.png","images/smiley.png","images/levelfull_mapmask.png","images/level4_mapmask.png"
                 "images/ldsizes/char62.png","images/ldsizes/char61.png","images/ldsizes/char60.png","images/ldsizes/char59.png"
                 "images/ldsizes/char58.png","images/ldsizes/char57.png","images/ldsizes/char56.png","images/ldsizes/char55.png"
                 "images/ldsizes/char54.png","images/ldsizes/char53.png","images/ldsizes/char52.png","images/ldsizes/char51.png"
@@ -29,6 +29,7 @@ key_right = 0
 #
 charmask = 0
 wallmask = 0
+wallfullmask = 0
 pillmask = 0
 guardmask = 0
 smileymask = 0
@@ -60,6 +61,7 @@ smiley_y = 150
 
 
 smileyextragrowth = 0
+smileydead = 0
 
 
 
@@ -107,7 +109,7 @@ level4draw = ->
     char_ver_acc = char_ver_acc / 1.3
     char_hor_acc = char_hor_acc / 1.3
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)
-    gamejs.draw.rect(display, '#000000', new gamejs.Rect([75, 568], [50, 32]), 0)
+    if smileydead == 1 then gamejs.draw.rect(display, '#000000', new gamejs.Rect([75, 568], [50, 32]), 0)
 
     ##########char growth and shrink###################
     chargrowth += charstate
@@ -148,17 +150,24 @@ level4draw = ->
     charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char#{charsize}.png"))
     
     ##############################collision#############################################
+    if smileydead == 0
+        relativeOffset_levelfull = gamejs.utils.vectors.subtract([0,0], [char_x,char_y])  
+        wallfullMaskOverlap = charmask.overlap(wallfullmask, relativeOffset_levelfull)
+        if wallfullMaskOverlap then console.log "kollision"
     
     
     
-    
-    relativeOffset_level4 = gamejs.utils.vectors.subtract([0,0], [char_x,char_y])  
-    wallMaskOverlap = charmask.overlap(wallmask, relativeOffset_level4)
-    if wallMaskOverlap then console.log "kollision"
+    if smileydead == 1
+        relativeOffset_level4 = gamejs.utils.vectors.subtract([0,0], [char_x,char_y])  
+        wallMaskOverlap = charmask.overlap(wallmask, relativeOffset_level4)
+        if wallMaskOverlap then console.log "kollision"
 
     relativeOffset_smiley = gamejs.utils.vectors.subtract([smiley_x,smiley_y],[char_x,char_y])  
     smileyMaskOverlap = charmask.overlap(wallmask, relativeOffset_smiley)
-    if smileyMaskOverlap then console.log "smiley"
+    if smileyMaskOverlap and charsize > 200
+        smileydead = 1
+    if smileyMaskOverlap and charsize <= 200
+        console.log "die"
 
     
 
@@ -207,7 +216,7 @@ level4draw = ->
     ################drawsprites##################################
     charSprite.rect = new gamejs.Rect([char_x,char_y])
     smiley_Sprite.rect = new gamejs.Rect([smiley_x,smiley_y])
-    smiley_Sprite.draw(display)
+    if smileydead == 0 then smiley_Sprite.draw(display)
     charSprite.draw(display)
   
     #############################################################
@@ -237,11 +246,13 @@ makeWall = ->
 
 level4 = ->
     ###############################collision vars##############################
-    level4maskimg = gamejs.image.load('images/level2_mapmask.png')
+    level4maskimg = gamejs.image.load('images/level4_mapmask.png')
+    levelfullmaskimg = gamejs.image.load('images/levelfull_mapmask.png')
     pillmaskimg = gamejs.image.load('images/pill_down.png')
     smileymaskimg = gamejs.image.load('images/smiley.png')
     charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char#{charsize}.png"))
     wallmask = gamejs.mask.fromSurface(level4maskimg)
+    wallfullmask = gamejs.mask.fromSurface(levelfullmaskimg)
     pillmask = gamejs.mask.fromSurface(pillmaskimg)
     smileymask = gamejs.mask.fromSurface(smileymaskimg)
     #####################################################################
@@ -249,7 +260,7 @@ level4 = ->
     ##################levelgen#########################################
     makeWall()
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)
-    gamejs.draw.rect(display, '#000000', new gamejs.Rect([75, 568], [50, 32]), 0)
+    
 
     ######################################################################
     

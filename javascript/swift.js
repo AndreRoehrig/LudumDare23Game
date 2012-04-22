@@ -1,5 +1,5 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, chargrowth, charmask, charsize, charstate, counter, director, display, gamejs, guard1_Sprite, guard1_x, guard1_y, guard2_Sprite, guard2_x, guard2_y, guardmask, guardspeed, guardstate, handleEvent, key_down, key_left, key_right, key_up, level, level1, level1draw, level2, level2draw, levelchecker, main, makeWall, pilledown_1_dead, pilledown_2_dead, pilledown_3_dead, pilledown_pos1, pilledown_pos2, pilledown_pos3, pilleup_1_dead, pilleup_2_dead, pilleup_3_dead, pilleup_pos1, pilleup_pos2, pilleup_pos3, pillmask, smiley_Sprite, smiley_x, smiley_y, smileydead, smileyextragrowth, smileymask, startscreen, wallfullmask, wallmask;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, chargrowth, charmask, charsize, charstate, counter, director, display, gamejs, guard1_Sprite, guard1_x, guard1_y, guard2_Sprite, guard2_x, guard2_y, guardmask, guardspeed, guardstate, handleEvent, key_down, key_left, key_right, key_up, level, level1, level1draw, level2, level2draw, level3, level3draw, levelchecker, main, makeWall, pilledown_1_dead, pilledown_2_dead, pilledown_3_dead, pilledown_pos1, pilledown_pos2, pilledown_pos3, pilleup_1_dead, pilleup_2_dead, pilleup_3_dead, pilleup_pos1, pilleup_pos2, pilleup_pos3, pillmask, smiley_Sprite, smiley_x, smiley_y, smileydead, smileyextragrowth, smileymask, startscreen, wallfullmask, wallmask;
 
   gamejs = require('gamejs');
 
@@ -211,14 +211,14 @@
     char_hor_speed = 0;
     charSprite = new gamejs.sprite.Sprite();
     charSprite.rect = new gamejs.Rect([250, 500]);
-    charimg = gamejs.image.load('images/char.png');
+    charimg = gamejs.image.load('images/ldsizes/char100.png');
     level1maskimg = gamejs.image.load('images/level1_mapmask.png');
     charmask = gamejs.mask.fromSurface(charimg);
     wallmask = gamejs.mask.fromSurface(level1maskimg);
     makeWall();
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0);
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 200], [32, 200]), 0);
-    charSprite.image = gamejs.image.load("images/char.png");
+    charSprite.image = gamejs.image.load('images/ldsizes/char100.png');
     return gamejs.time.fpsCallback(level1draw, this, 30);
   };
 
@@ -382,9 +382,145 @@
     charSprite.rect = new gamejs.Rect([char_x, char_y]);
     charSprite.draw(display);
     if (char_x > 800) {
-      level = 2;
+      level = 3;
       return gamejs.time.deleteCallback(level2draw, 30);
     }
+  };
+
+  level3 = function() {
+    var guardmaskimg, level3maskimg, pillmaskimg;
+    counter = 0;
+    key_down = 0;
+    key_up = 0;
+    key_left = 0;
+    key_right = 0;
+    charmask = 0;
+    wallmask = 0;
+    pillmask = 0;
+    guardmask = 0;
+    chargrowth = 0;
+    charsize = 96;
+    charstate = 0;
+    char_x = 50;
+    char_y = 268;
+    char_ver_acc = 0;
+    char_ver_speed = 0;
+    char_hor_acc = 0;
+    char_hor_speed = 0;
+    guard1_x = 640;
+    guard1_y = 225;
+    guard2_x = 710;
+    guard2_y = 305;
+    guardspeed = 1;
+    guardstate = 1;
+    charSprite = new gamejs.sprite.Sprite();
+    charSprite.rect = new gamejs.Rect([250, 500]);
+    guard1_Sprite = new gamejs.sprite.Sprite();
+    guard1_Sprite.rect = new gamejs.Rect([guard1_x, guard1_y]);
+    guard2_Sprite = new gamejs.sprite.Sprite();
+    guard2_Sprite.rect = new gamejs.Rect([guard2_x, guard2_y]);
+    pilledown_pos1 = [200, 100];
+    pilledown_pos2 = [400, 100];
+    pilledown_pos3 = [600, 100];
+    pilledown_1_dead = 0;
+    pilledown_2_dead = 0;
+    pilledown_3_dead = 0;
+    pilleup_1_dead = 0;
+    pilleup_2_dead = 0;
+    pilleup_3_dead = 0;
+    pilleup_pos1 = [200, 500];
+    pilleup_pos2 = [400, 500];
+    pilleup_pos3 = [600, 500];
+    level3maskimg = gamejs.image.load('images/level2_mapmask.png');
+    pillmaskimg = gamejs.image.load('images/pill_down.png');
+    guardmaskimg = gamejs.image.load('images/guard.png');
+    charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char" + charsize + ".png"));
+    wallmask = gamejs.mask.fromSurface(level3maskimg);
+    pillmask = gamejs.mask.fromSurface(pillmaskimg);
+    guardmask = gamejs.mask.fromSurface(guardmaskimg);
+    makeWall();
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0);
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 275], [32, 50]), 0);
+    pilledown_pos1 = [500, 200];
+    pilleup_pos1 = [500, 400];
+    charSprite.image = gamejs.image.load("images/char.png");
+    guard1_Sprite.image = gamejs.image.load("images/guard.png");
+    guard2_Sprite.image = gamejs.image.load("images/guard.png");
+    return gamejs.time.fpsCallback(level3draw, this, 30);
+  };
+
+  level3draw = function() {
+    var event, guard1MaskOverlap, guard2MaskOverlap, pilledownMaskOverlap_1, pilleupMaskOverlap_1, relativeOffset_guard1, relativeOffset_guard2, relativeOffset_level3, relativeOffset_pilledown_1, relativeOffset_pilleup_1, wallMaskOverlap, _i, _len, _ref;
+    if (key_up === 1) char_ver_acc -= 0.3;
+    if (key_down === 1) char_ver_acc += 0.3;
+    if (key_right === 1) char_hor_acc += 0.3;
+    if (key_left === 1) char_hor_acc -= 0.3;
+    _ref = gamejs.event.get();
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      event = _ref[_i];
+      handleEvent(event);
+    }
+    char_ver_acc = char_ver_acc / 1.3;
+    char_hor_acc = char_hor_acc / 1.3;
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0);
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 275], [32, 50]), 0);
+    chargrowth += charstate;
+    if (chargrowth === 4) charsize += 1;
+    if (chargrowth === 4) chargrowth = 0;
+    if (chargrowth === -4) charsize -= 1;
+    if (chargrowth === -4) chargrowth = 0;
+    char_ver_speed += char_ver_acc;
+    char_ver_speed = char_ver_speed / 1.3;
+    char_x += char_hor_speed;
+    char_hor_speed += char_hor_acc;
+    char_hor_speed = char_hor_speed / 1.3;
+    char_y += char_ver_speed;
+    if (guard1_y <= 225) guardstate = 1;
+    if (guard1_y >= 305) guardstate = -1;
+    guard1_y += guardstate;
+    guard2_y -= guardstate;
+    console.log(guard1_y);
+    charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char" + charsize + ".png"));
+    relativeOffset_level3 = gamejs.utils.vectors.subtract([0, 0], [char_x, char_y]);
+    wallMaskOverlap = charmask.overlap(wallmask, relativeOffset_level3);
+    if (wallMaskOverlap) {
+      gamejs.time.deleteCallback(level3draw, 30);
+      level3();
+    }
+    relativeOffset_guard1 = gamejs.utils.vectors.subtract([guard1_x, guard1_y], [char_x, char_y]);
+    guard1MaskOverlap = charmask.overlap(guardmask, relativeOffset_guard1);
+    if (guard1MaskOverlap) {
+      gamejs.time.deleteCallback(level3draw, 30);
+      level3();
+    }
+    relativeOffset_guard2 = gamejs.utils.vectors.subtract([guard2_x, guard2_y], [char_x, char_y]);
+    guard2MaskOverlap = charmask.overlap(guardmask, relativeOffset_guard2);
+    if (guard2MaskOverlap) {
+      gamejs.time.deleteCallback(level3draw, 30);
+      level3();
+    }
+    if (pilledown_1_dead === 0) {
+      relativeOffset_pilledown_1 = gamejs.utils.vectors.subtract(pilledown_pos1, [char_x, char_y]);
+      pilledownMaskOverlap_1 = charmask.overlap(pillmask, relativeOffset_pilledown_1);
+      if (pilledownMaskOverlap_1) charstate = -1;
+      if (pilledownMaskOverlap_1) pilledown_1_dead = 1;
+      display.blit(gamejs.image.load("images/pill_down.png"), pilledown_pos1);
+    }
+    if (pilleup_1_dead === 0) {
+      relativeOffset_pilleup_1 = gamejs.utils.vectors.subtract(pilleup_pos1, [char_x, char_y]);
+      pilleupMaskOverlap_1 = charmask.overlap(pillmask, relativeOffset_pilleup_1);
+      if (pilleupMaskOverlap_1) charstate = 1;
+      if (pilleupMaskOverlap_1) pilleup_1_dead = 1;
+      display.blit(gamejs.image.load("images/pill_up.png"), pilleup_pos1);
+    }
+    charSprite.image = gamejs.image.load("images/ldsizes/char" + charsize + ".png");
+    console.log(charstate);
+    charSprite.rect = new gamejs.Rect([char_x, char_y]);
+    guard1_Sprite.rect = new gamejs.Rect([guard1_x, guard1_y]);
+    guard2_Sprite.rect = new gamejs.Rect([guard2_x, guard2_y]);
+    charSprite.draw(display);
+    guard1_Sprite.draw(display);
+    return guard2_Sprite.draw(display);
   };
 
   gamejs.ready(main);

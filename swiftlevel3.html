@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SWIFT</title>
+<!-- Styling -->
+    <style type=text/css>
+          body{
+           background: #111111;
+           color: white;
+           margin:1em 0 2em 6em;
+           padding:0;
+           text-align: center;
+        }
+        #gjs-canvas {
+           border: none;
+        }
+        #gjs-loader {
+            width: 50%;
+            height: 50%;
+        }
+        a:link { color: #88F; text-decoration: none; }
+        a:visited { color: #F8F; text-decoration: none; }
+        a:active { color: #F44; text-decoration: none; }
+        header {
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        h1 {
+            margin-bottom: 2px;
+        }
+        header p {
+            margin: 2px;
+        }
+    </style>
+<!-- Start javascript/main.js -->
+    <script src="./public/yabble.js"></script>
+    <script src="./public/gamejs.min.js"></script>
+    <script>
+        require.setModuleRoot('./javascript/');
+        require.run('level3')
+    </script>
+</head>
+<!-- Html -->
+<body>
+    <div>
+        
+        <canvas id="gjs-canvas"></canvas>
+        <p>
+        Powered by <a href="http://gamejs.org">GameJs</a>.
+        </p>
+    </div>
+</body>
+</html>

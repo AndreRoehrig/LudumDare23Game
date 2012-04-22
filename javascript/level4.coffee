@@ -107,7 +107,7 @@ level4draw = ->
     char_ver_acc = char_ver_acc / 1.3
     char_hor_acc = char_hor_acc / 1.3
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)
-    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 275], [32, 50]), 0)
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([75, 568], [50, 32]), 0)
 
     ##########char growth and shrink###################
     chargrowth += charstate
@@ -134,8 +134,13 @@ level4draw = ->
     smiley_x_movement = ((Math.pow(Math.pow((smiley_x+160) - (char_x+charsize),2),0.5)) / smiley_distance) * 1.5
     smiley_y_movement = ((Math.pow(Math.pow((smiley_y+160) - (char_y+charsize),2),0.5)) / smiley_distance) * 1.5
     
-    if (char_x+charsize) > (smiley_x+160) then smiley_x = smiley_x + smiley_x_movement else smiley_x = smiley_x - smiley_x_movement
-    if (char_y+charsize) > (smiley_y+160) then smiley_y = smiley_y + smiley_y_movement else smiley_y = smiley_y - smiley_y_movement
+    if (smiley_x > 33) and (smiley_x < 565)
+        if (char_x+charsize) > (smiley_x+160) then smiley_x = smiley_x + smiley_x_movement else smiley_x = smiley_x - smiley_x_movement
+            
+
+
+    if (smiley_y > 33) and (smiley_y < 365)
+        if (char_y+charsize) > (smiley_y+160) then smiley_y = smiley_y + smiley_y_movement else smiley_y = smiley_y - smiley_y_movement
 
     ###############################################################
     
@@ -244,7 +249,7 @@ level4 = ->
     ##################levelgen#########################################
     makeWall()
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)
-    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 275], [32, 50]), 0)
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([75, 568], [50, 32]), 0)
 
     ######################################################################
     

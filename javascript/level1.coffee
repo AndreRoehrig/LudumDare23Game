@@ -30,7 +30,7 @@ display = gamejs.display.setMode([800,650])
 
 
  
-draw = ->
+level1draw = ->
     if key_up == 1 then char_ver_acc -= 0.3
     if key_down == 1 then char_ver_acc += 0.3
     if key_right == 1 then char_hor_acc += 0.3
@@ -88,7 +88,7 @@ level1 = ->
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 200], [32, 200]), 0)
     charSprite.image = gamejs.image.load("images/char.png")
-    gamejs.time.fpsCallback(draw, this, 30)
+    gamejs.time.fpsCallback(level1draw, this, 30)
    
 
 

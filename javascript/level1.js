@@ -1,5 +1,5 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, display, draw, gamejs, handleEvent, key_down, key_left, key_right, key_up, level1, makeWall, wallmask;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, charmask, display, gamejs, handleEvent, key_down, key_left, key_right, key_up, level1, level1draw, makeWall, wallmask;
 
   gamejs = require('gamejs');
 
@@ -35,7 +35,7 @@
 
   display = gamejs.display.setMode([800, 650]);
 
-  draw = function() {
+  level1draw = function() {
     var event, hasMaskOverlap, relativeOffset, _i, _len, _ref;
     if (key_up === 1) char_ver_acc -= 0.3;
     if (key_down === 1) char_ver_acc += 0.3;
@@ -122,7 +122,7 @@
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0);
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 200], [32, 200]), 0);
     charSprite.image = gamejs.image.load("images/char.png");
-    return gamejs.time.fpsCallback(draw, this, 30);
+    return gamejs.time.fpsCallback(level1draw, this, 30);
   };
 
   gamejs.ready(level1);

@@ -1,6 +1,6 @@
 gamejs = require('gamejs')
 
-gamejs.preload(["images/char.png","images/wall.png","images/level1_mapmask.png","images/level2_mapmask.png","images/ldsizes/char64.png","images/ldsizes/char63.png","images/guard.png","images/boss.png"
+gamejs.preload(["images/char.png","images/wall.png","images/level1_mapmask.png","images/level2_mapmask.png","images/ldsizes/char64.png","images/ldsizes/char63.png","images/guard.png","images/boss.png","images/smiley.png"
                 "images/ldsizes/char62.png","images/ldsizes/char61.png","images/ldsizes/char60.png","images/ldsizes/char59.png"
                 "images/ldsizes/char58.png","images/ldsizes/char57.png","images/ldsizes/char56.png","images/ldsizes/char55.png"
                 "images/ldsizes/char54.png","images/ldsizes/char53.png","images/ldsizes/char52.png","images/ldsizes/char51.png"
@@ -31,6 +31,7 @@ charmask = 0
 wallmask = 0
 pillmask = 0
 guardmask = 0
+smileymask = 0
 
 chargrowth = 0
 charsize = 96
@@ -53,6 +54,9 @@ guard2_y = 305
 guardspeed = 1
 guardstate = 1
 
+smiley_x = 500
+smiley_y = 150
+
 #########sprites######################
 charSprite = new gamejs.sprite.Sprite()
 charSprite.rect = new gamejs.Rect([250,500])
@@ -62,6 +66,9 @@ guard1_Sprite.rect = new gamejs.Rect([guard1_x,guard1_y])
 
 guard2_Sprite = new gamejs.sprite.Sprite()
 guard2_Sprite.rect = new gamejs.Rect([guard2_x,guard2_y])
+
+smiley_Sprite = new gamejs.sprite.Sprite()
+smiley_Sprite.rect = new gamejs.Rect([smiley_x,smiley_y])
 
 ##################################
 
@@ -146,6 +153,20 @@ level4draw = ->
         if pilleupMaskOverlap_1 then charstate = 1
         if pilleupMaskOverlap_1 then pilleup_1_dead = 1
         display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos1)
+
+    if pilleup_2_dead == 0
+        relativeOffset_pilleup_2 = gamejs.utils.vectors.subtract(pilleup_pos2, [char_x,char_y])  
+        pilleupMaskOverlap_2 = charmask.overlap(pillmask, relativeOffset_pilleup_2)
+        if pilleupMaskOverlap_2 then charstate = 1
+        if pilleupMaskOverlap_2 then pilleup_2_dead = 1
+        display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos2)
+
+    if pilleup_3_dead == 0
+        relativeOffset_pilleup_3 = gamejs.utils.vectors.subtract(pilleup_pos3, [char_x,char_y])  
+        pilleupMaskOverlap_3 = charmask.overlap(pillmask, relativeOffset_pilleup_3)
+        if pilleupMaskOverlap_3 then charstate = 1
+        if pilleupMaskOverlap_3 then pilleup_3_dead = 1
+        display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos3)
     
     
     ####################################################################
@@ -157,7 +178,7 @@ level4draw = ->
     charSprite.rect = new gamejs.Rect([char_x,char_y])
     
     charSprite.draw(display)
-    
+    smiley_Sprite.draw(display)
   
     #############################################################
     
@@ -188,11 +209,11 @@ level4 = ->
     ###############################collision vars##############################
     level4maskimg = gamejs.image.load('images/level2_mapmask.png')
     pillmaskimg = gamejs.image.load('images/pill_down.png')
-    
+    smileymaskimg = gamejs.image.load('images/smiley.png')
     charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char#{charsize}.png"))
     wallmask = gamejs.mask.fromSurface(level4maskimg)
     pillmask = gamejs.mask.fromSurface(pillmaskimg)
-    
+    smileymask = gamejs.mask.fromSurface(smileymaskimg)
     #####################################################################
     
     ##################levelgen#########################################
@@ -203,12 +224,14 @@ level4 = ->
     ######################################################################
     
     ####################pillenpos####################################
-    pilledown_pos1 = [500,200]
-    pilleup_pos1 = [500,400]
+    pilledown_pos1 = [733,50]
+    pilleup_pos1 = [50,533]
+    pilleup_pos2 = [50,50]
+    pilleup_pos3 = [733,533]
     
     #######################char_pics###############################
     charSprite.image = gamejs.image.load("images/char.png")
-    
+    smiley_Sprite.image = gamejs.image.load("images/smiley.png")
     ###############################################################
     gamejs.time.fpsCallback(level4draw, this, 30)
 

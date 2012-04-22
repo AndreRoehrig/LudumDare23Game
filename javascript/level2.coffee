@@ -32,8 +32,8 @@ wallmask = 0
 pillmask = 0
 
 chargrowth = 0
-charsize = 100
-charstate = 1
+charsize = 96
+charstate = 0
 
 
 char_x = 300
@@ -52,6 +52,14 @@ pilledown_pos1 = [200,100]
 pilledown_pos2 = [400,100]
 pilledown_pos3 = [600,100]
 
+pilledown_1_dead = 0
+pilledown_2_dead = 0
+pilledown_3_dead = 0
+
+pilleup_1_dead = 0
+pilleup_2_dead = 0
+pilleup_3_dead = 0
+
 pilleup_pos1 = [200,500]
 pilleup_pos2 = [400,500]
 pilleup_pos3 = [600,500]
@@ -67,12 +75,16 @@ draw = ->
     char_ver_acc = char_ver_acc / 1.3
     char_hor_acc = char_hor_acc / 1.3
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)
-    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 285], [32, 30]), 0)
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 275], [32, 50]), 0)
 
     ##########char growth and shrink###################
     chargrowth += charstate
-    if chargrowth == 2 then charsize += 1
-    if chargrowth == 2 then chargrowth = 0
+    
+    if chargrowth == 4 then charsize += 1
+    if chargrowth == 4 then chargrowth = 0
+
+    if chargrowth == -4 then charsize -= 1
+    if chargrowth == -4 then chargrowth = 0
 
     ####################################################
 
@@ -93,48 +105,53 @@ draw = ->
     if wallMaskOverlap then console.log "kollision"
 
     ####################################################################collision pillen
-    relativeOffset_pilledown_1 = gamejs.utils.vectors.subtract(pilledown_pos1, [char_x,char_y])  
-    pilleMaskOverlap_1 = charmask.overlap(pillmask, relativeOffset_pilledown_1)
-    if pilleMaskOverlap_1 then console.log "pille"
+    if pilledown_1_dead == 0
+        relativeOffset_pilledown_1 = gamejs.utils.vectors.subtract(pilledown_pos1, [char_x,char_y])  
+        pilledownMaskOverlap_1 = charmask.overlap(pillmask, relativeOffset_pilledown_1)
+        if pilledownMaskOverlap_1 then charstate = -1
+        if pilledownMaskOverlap_1 then pilledown_1_dead = 1
+        display.blit(gamejs.image.load("images/pill_down.png"),pilledown_pos1)
 
-    display.blit(gamejs.image.load("images/pill_down.png"),pilledown_pos1)
-
-    relativeOffset_pilledown_2 = gamejs.utils.vectors.subtract(pilledown_pos2, [char_x,char_y])  
-    pilleMaskOverlap_2 = charmask.overlap(pillmask, relativeOffset_pilledown_2)
-    if pilleMaskOverlap_2 then console.log "pille"
-
-    display.blit(gamejs.image.load("images/pill_down.png"),pilledown_pos2)
-
-
-    relativeOffset_pilledown_3 = gamejs.utils.vectors.subtract(pilledown_pos3, [char_x,char_y])  
-    pilleMaskOverlap_3 = charmask.overlap(pillmask, relativeOffset_pilledown_3)
-    if pilleMaskOverlap_3 then console.log "pille"
-
-    display.blit(gamejs.image.load("images/pill_down.png"),pilledown_pos3)
-
-    relativeOffset_pilleup_1 = gamejs.utils.vectors.subtract(pilleup_pos1, [char_x,char_y])  
-    pilleMaskOverlap_1 = charmask.overlap(pillmask, relativeOffset_pilleup_1)
-    if pilleMaskOverlap_1 then console.log "pille"
-
-    display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos1)
-
-    relativeOffset_pilleup_2 = gamejs.utils.vectors.subtract(pilleup_pos2, [char_x,char_y])  
-    pilleMaskOverlap_2 = charmask.overlap(pillmask, relativeOffset_pilleup_2)
-    if pilleMaskOverlap_2 then console.log "pille"
-
-    display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos2)
+    if pilledown_2_dead == 0
+        relativeOffset_pilledown_2 = gamejs.utils.vectors.subtract(pilledown_pos2, [char_x,char_y])  
+        pilledownMaskOverlap_2 = charmask.overlap(pillmask, relativeOffset_pilledown_2)
+        if pilledownMaskOverlap_2 then charstate = -1
+        if pilledownMaskOverlap_2 then pilledown_2_dead = 1
+        display.blit(gamejs.image.load("images/pill_down.png"),pilledown_pos2)
 
 
-    relativeOffset_pilleup_3 = gamejs.utils.vectors.subtract(pilleup_pos3, [char_x,char_y])  
-    pilleMaskOverlap_3 = charmask.overlap(pillmask, relativeOffset_pilleup_3)
-    if pilleMaskOverlap_3 then console.log "pille"
+    if pilledown_3_dead == 0
+        relativeOffset_pilledown_3 = gamejs.utils.vectors.subtract(pilledown_pos3, [char_x,char_y])  
+        pilledownMaskOverlap_3 = charmask.overlap(pillmask, relativeOffset_pilledown_3)
+        if pilledownMaskOverlap_3 then charstate = -1
+        if pilledownMaskOverlap_3 then pilledown_3_dead = 1
+        display.blit(gamejs.image.load("images/pill_down.png"),pilledown_pos3)
 
-    display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos3)
+    if pilleup_1_dead == 0
+        relativeOffset_pilleup_1 = gamejs.utils.vectors.subtract(pilleup_pos1, [char_x,char_y])  
+        pilleupMaskOverlap_1 = charmask.overlap(pillmask, relativeOffset_pilleup_1)
+        if pilleupMaskOverlap_1 then charstate = 1
+        if pilleupMaskOverlap_1 then pilleup_1_dead = 1
+        display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos1)
+    
+    if pilleup_2_dead == 0
+        relativeOffset_pilleup_2 = gamejs.utils.vectors.subtract(pilleup_pos2, [char_x,char_y])  
+        pilleupMaskOverlap_2 = charmask.overlap(pillmask, relativeOffset_pilleup_2)
+        if pilleupMaskOverlap_2 then charstate = 1
+        if pilleupMaskOverlap_2 then pilleup_2_dead = 1
+        display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos2)
 
+
+    if pilleup_3_dead == 0
+        relativeOffset_pilleup_3 = gamejs.utils.vectors.subtract(pilleup_pos3, [char_x,char_y])  
+        pilleupMaskOverlap_3 = charmask.overlap(pillmask, relativeOffset_pilleup_3)
+        if pilleupMaskOverlap_3 then charstate = 1
+        if pilleupMaskOverlap_3 then pilleup_3_dead = 1
+        display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos3)
     ####################################################################
 
     charSprite.image = gamejs.image.load("images/ldsizes/char#{charsize}.png")
-    
+    console.log charstate
 
     charSprite.rect = new gamejs.Rect([char_x,char_y])
     charSprite.draw(display)
@@ -175,7 +192,7 @@ level2 = ->
 
     makeWall()
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0)
-    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 285], [32, 30]), 0)
+    gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 275], [32, 50]), 0)
     charSprite.image = gamejs.image.load("images/char.png")
     gamejs.time.fpsCallback(draw, this, 30)
 

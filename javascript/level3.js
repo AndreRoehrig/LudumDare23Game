@@ -1,5 +1,5 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, chargrowth, charmask, charsize, charstate, counter, display, gamejs, guard1_Sprite, guard1_x, guard1_y, guard2_Sprite, guard2_x, guard2_y, guardmask, handleEvent, key_down, key_left, key_right, key_up, level3, level3draw, makeWall, pilledown_1_dead, pilledown_2_dead, pilledown_3_dead, pilledown_pos1, pilledown_pos2, pilledown_pos3, pilleup_1_dead, pilleup_2_dead, pilleup_3_dead, pilleup_pos1, pilleup_pos2, pilleup_pos3, pillmask, wallmask;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, chargrowth, charmask, charsize, charstate, counter, display, gamejs, guard1_Sprite, guard1_x, guard1_y, guard2_Sprite, guard2_x, guard2_y, guardmask, guardspeed, guardstate, handleEvent, key_down, key_left, key_right, key_up, level3, level3draw, makeWall, pilledown_1_dead, pilledown_2_dead, pilledown_3_dead, pilledown_pos1, pilledown_pos2, pilledown_pos3, pilleup_1_dead, pilleup_2_dead, pilleup_3_dead, pilleup_pos1, pilleup_pos2, pilleup_pos3, pillmask, wallmask;
 
   gamejs = require('gamejs');
 
@@ -48,6 +48,10 @@
   guard2_x = 710;
 
   guard2_y = 305;
+
+  guardspeed = 1;
+
+  guardstate = 1;
 
   charSprite = new gamejs.sprite.Sprite();
 
@@ -113,6 +117,11 @@
     char_hor_speed += char_hor_acc;
     char_hor_speed = char_hor_speed / 1.3;
     char_y += char_ver_speed;
+    if (guard1_y <= 225) guardstate = 1;
+    if (guard1_y >= 305) guardstate = -1;
+    guard1_y += guardstate;
+    guard2_y -= guardstate;
+    console.log(guard1_y);
     charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char" + charsize + ".png"));
     relativeOffset_level3 = gamejs.utils.vectors.subtract([0, 0], [char_x, char_y]);
     wallMaskOverlap = charmask.overlap(wallmask, relativeOffset_level3);
@@ -141,6 +150,8 @@
     charSprite.image = gamejs.image.load("images/ldsizes/char" + charsize + ".png");
     console.log(charstate);
     charSprite.rect = new gamejs.Rect([char_x, char_y]);
+    guard1_Sprite.rect = new gamejs.Rect([guard1_x, guard1_y]);
+    guard2_Sprite.rect = new gamejs.Rect([guard2_x, guard2_y]);
     charSprite.draw(display);
     guard1_Sprite.draw(display);
     return guard2_Sprite.draw(display);

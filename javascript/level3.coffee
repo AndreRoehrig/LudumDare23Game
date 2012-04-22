@@ -50,6 +50,9 @@ guard1_y = 225
 guard2_x = 710
 guard2_y = 305
 
+guardspeed = 1
+guardstate = 1
+
 #########sprites######################
 charSprite = new gamejs.sprite.Sprite()
 charSprite.rect = new gamejs.Rect([250,500])
@@ -108,6 +111,18 @@ level3draw = ->
     char_hor_speed += char_hor_acc
     char_hor_speed = char_hor_speed / 1.3
     char_y += char_ver_speed
+
+
+    #####################enemy movement############################
+
+    
+    if guard1_y <= 225 then guardstate = 1
+    if guard1_y >= 305 then guardstate = -1
+    guard1_y += guardstate
+    guard2_y -= guardstate
+    console.log guard1_y   
+
+    ###############################################################
     
     #collision
     charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char#{charsize}.png"))
@@ -151,6 +166,8 @@ level3draw = ->
     
     ################drawsprites##################################
     charSprite.rect = new gamejs.Rect([char_x,char_y])
+    guard1_Sprite.rect = new gamejs.Rect([guard1_x,guard1_y])
+    guard2_Sprite.rect = new gamejs.Rect([guard2_x,guard2_y])
     charSprite.draw(display)
     
     guard1_Sprite.draw(display)

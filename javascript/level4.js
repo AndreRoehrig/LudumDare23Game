@@ -1,5 +1,5 @@
 (function() {
-  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, chargrowth, charmask, charsize, charstate, counter, display, gamejs, guard1_Sprite, guard1_x, guard1_y, guard2_Sprite, guard2_x, guard2_y, guardmask, guardspeed, guardstate, handleEvent, key_down, key_left, key_right, key_up, level4, level4draw, makeWall, pilledown_1_dead, pilledown_2_dead, pilledown_3_dead, pilledown_pos1, pilledown_pos2, pilledown_pos3, pilleup_1_dead, pilleup_2_dead, pilleup_3_dead, pilleup_pos1, pilleup_pos2, pilleup_pos3, pillmask, smiley_Sprite, smiley_x, smiley_y, smileymask, wallmask;
+  var charSprite, char_hor_acc, char_hor_speed, char_ver_acc, char_ver_speed, char_x, char_y, chargrowth, charmask, charsize, charstate, counter, display, gamejs, guard1_Sprite, guard1_x, guard1_y, guard2_Sprite, guard2_x, guard2_y, guardmask, guardspeed, guardstate, handleEvent, key_down, key_left, key_right, key_up, level4, level4draw, makeWall, pilledown_1_dead, pilledown_2_dead, pilledown_3_dead, pilledown_pos1, pilledown_pos2, pilledown_pos3, pilleup_1_dead, pilleup_2_dead, pilleup_3_dead, pilleup_pos1, pilleup_pos2, pilleup_pos3, pillmask, smiley_Sprite, smiley_x, smiley_y, smileyextragrowth, smileymask, wallmask;
 
   gamejs = require('gamejs');
 
@@ -59,6 +59,8 @@
 
   smiley_y = 150;
 
+  smileyextragrowth = 0;
+
   charSprite = new gamejs.sprite.Sprite();
 
   charSprite.rect = new gamejs.Rect([250, 500]);
@@ -102,7 +104,7 @@
   display = gamejs.display.setMode([800, 600]);
 
   level4draw = function() {
-    var event, pilledownMaskOverlap_1, pilleupMaskOverlap_1, pilleupMaskOverlap_2, pilleupMaskOverlap_3, relativeOffset_level4, relativeOffset_pilledown_1, relativeOffset_pilleup_1, relativeOffset_pilleup_2, relativeOffset_pilleup_3, relativeOffset_smiley, smileyMaskOverlap, wallMaskOverlap, _i, _len, _ref;
+    var event, pilledownMaskOverlap_1, pilleupMaskOverlap_1, pilleupMaskOverlap_2, pilleupMaskOverlap_3, relativeOffset_level4, relativeOffset_pilledown_1, relativeOffset_pilleup_1, relativeOffset_pilleup_2, relativeOffset_pilleup_3, relativeOffset_smiley, smileyMaskOverlap, smiley_distance, smiley_x_movement, smiley_y_movement, wallMaskOverlap, _i, _len, _ref;
     if (key_up === 1) char_ver_acc -= 0.3;
     if (key_down === 1) char_ver_acc += 0.3;
     if (key_right === 1) char_hor_acc += 0.3;
@@ -117,7 +119,7 @@
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([32, 32], [736, 536]), 0);
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 275], [32, 50]), 0);
     chargrowth += charstate;
-    if (chargrowth === 4) charsize += 1;
+    if (chargrowth === 4) charsize += smileyextragrowth;
     if (chargrowth === 4) chargrowth = 0;
     if (chargrowth === -4) charsize -= 1;
     if (chargrowth === -4) chargrowth = 0;
@@ -127,6 +129,19 @@
     char_hor_speed += char_hor_acc;
     char_hor_speed = char_hor_speed / 1.3;
     char_y += char_ver_speed;
+    smiley_distance = (Math.pow(Math.pow((smiley_x + 160) - (char_x + charsize), 2), 0.5)) + (Math.pow(Math.pow((smiley_y + 160) - (char_y + charsize), 2), 0.5));
+    smiley_x_movement = ((Math.pow(Math.pow((smiley_x + 160) - (char_x + charsize), 2), 0.5)) / smiley_distance) * 1.5;
+    smiley_y_movement = ((Math.pow(Math.pow((smiley_y + 160) - (char_y + charsize), 2), 0.5)) / smiley_distance) * 1.5;
+    if ((char_x + charsize) > (smiley_x + 160)) {
+      smiley_x = smiley_x + smiley_x_movement;
+    } else {
+      smiley_x = smiley_x - smiley_x_movement;
+    }
+    if ((char_y + charsize) > (smiley_y + 160)) {
+      smiley_y = smiley_y + smiley_y_movement;
+    } else {
+      smiley_y = smiley_y - smiley_y_movement;
+    }
     charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char" + charsize + ".png"));
     relativeOffset_level4 = gamejs.utils.vectors.subtract([0, 0], [char_x, char_y]);
     wallMaskOverlap = charmask.overlap(wallmask, relativeOffset_level4);
@@ -144,27 +159,37 @@
     if (pilleup_1_dead === 0) {
       relativeOffset_pilleup_1 = gamejs.utils.vectors.subtract(pilleup_pos1, [char_x, char_y]);
       pilleupMaskOverlap_1 = charmask.overlap(pillmask, relativeOffset_pilleup_1);
-      if (pilleupMaskOverlap_1) charstate = 1;
+      if (pilleupMaskOverlap_1) {
+        charstate = 1;
+        smileyextragrowth += 1;
+      }
       if (pilleupMaskOverlap_1) pilleup_1_dead = 1;
       display.blit(gamejs.image.load("images/pill_up.png"), pilleup_pos1);
     }
     if (pilleup_2_dead === 0) {
       relativeOffset_pilleup_2 = gamejs.utils.vectors.subtract(pilleup_pos2, [char_x, char_y]);
       pilleupMaskOverlap_2 = charmask.overlap(pillmask, relativeOffset_pilleup_2);
-      if (pilleupMaskOverlap_2) charstate = 1;
+      if (pilleupMaskOverlap_2) {
+        charstate = 1;
+        smileyextragrowth += 1;
+      }
       if (pilleupMaskOverlap_2) pilleup_2_dead = 1;
       display.blit(gamejs.image.load("images/pill_up.png"), pilleup_pos2);
     }
     if (pilleup_3_dead === 0) {
       relativeOffset_pilleup_3 = gamejs.utils.vectors.subtract(pilleup_pos3, [char_x, char_y]);
       pilleupMaskOverlap_3 = charmask.overlap(pillmask, relativeOffset_pilleup_3);
-      if (pilleupMaskOverlap_3) charstate = 1;
+      if (pilleupMaskOverlap_3) {
+        charstate = 1;
+        smileyextragrowth += 1;
+      }
       if (pilleupMaskOverlap_3) pilleup_3_dead = 1;
       display.blit(gamejs.image.load("images/pill_up.png"), pilleup_pos3);
     }
     charSprite.image = gamejs.image.load("images/ldsizes/char" + charsize + ".png");
     console.log(charstate);
     charSprite.rect = new gamejs.Rect([char_x, char_y]);
+    smiley_Sprite.rect = new gamejs.Rect([smiley_x, smiley_y]);
     smiley_Sprite.draw(display);
     return charSprite.draw(display);
   };

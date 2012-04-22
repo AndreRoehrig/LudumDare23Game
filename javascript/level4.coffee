@@ -57,6 +57,14 @@ guardstate = 1
 smiley_x = 500
 smiley_y = 150
 
+
+
+smileyextragrowth = 0
+
+
+
+
+
 #########sprites######################
 charSprite = new gamejs.sprite.Sprite()
 charSprite.rect = new gamejs.Rect([250,500])
@@ -104,7 +112,7 @@ level4draw = ->
     ##########char growth and shrink###################
     chargrowth += charstate
     
-    if chargrowth == 4 then charsize += 1
+    if chargrowth == 4 then charsize += smileyextragrowth
     if chargrowth == 4 then chargrowth = 0
 
     if chargrowth == -4 then charsize -= 1
@@ -122,8 +130,12 @@ level4draw = ->
 
     #####################enemy movement############################
 
+    smiley_distance = (Math.pow(Math.pow((smiley_x+160) - (char_x+charsize),2),0.5)) + (Math.pow(Math.pow((smiley_y+160) - (char_y+charsize),2),0.5))
+    smiley_x_movement = ((Math.pow(Math.pow((smiley_x+160) - (char_x+charsize),2),0.5)) / smiley_distance) * 1.5
+    smiley_y_movement = ((Math.pow(Math.pow((smiley_y+160) - (char_y+charsize),2),0.5)) / smiley_distance) * 1.5
     
-    
+    if (char_x+charsize) > (smiley_x+160) then smiley_x = smiley_x + smiley_x_movement else smiley_x = smiley_x - smiley_x_movement
+    if (char_y+charsize) > (smiley_y+160) then smiley_y = smiley_y + smiley_y_movement else smiley_y = smiley_y - smiley_y_movement
 
     ###############################################################
     
@@ -131,6 +143,9 @@ level4draw = ->
     charmask = gamejs.mask.fromSurface(gamejs.image.load("images/ldsizes/char#{charsize}.png"))
     
     ##############################collision#############################################
+    
+    
+    
     
     relativeOffset_level4 = gamejs.utils.vectors.subtract([0,0], [char_x,char_y])  
     wallMaskOverlap = charmask.overlap(wallmask, relativeOffset_level4)
@@ -154,21 +169,27 @@ level4draw = ->
     if pilleup_1_dead == 0
         relativeOffset_pilleup_1 = gamejs.utils.vectors.subtract(pilleup_pos1, [char_x,char_y])  
         pilleupMaskOverlap_1 = charmask.overlap(pillmask, relativeOffset_pilleup_1)
-        if pilleupMaskOverlap_1 then charstate = 1
+        if pilleupMaskOverlap_1
+            charstate = 1
+            smileyextragrowth += 1
         if pilleupMaskOverlap_1 then pilleup_1_dead = 1
         display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos1)
 
     if pilleup_2_dead == 0
         relativeOffset_pilleup_2 = gamejs.utils.vectors.subtract(pilleup_pos2, [char_x,char_y])  
         pilleupMaskOverlap_2 = charmask.overlap(pillmask, relativeOffset_pilleup_2)
-        if pilleupMaskOverlap_2 then charstate = 1
+        if pilleupMaskOverlap_2
+            charstate = 1
+            smileyextragrowth += 1
         if pilleupMaskOverlap_2 then pilleup_2_dead = 1
         display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos2)
 
     if pilleup_3_dead == 0
         relativeOffset_pilleup_3 = gamejs.utils.vectors.subtract(pilleup_pos3, [char_x,char_y])  
         pilleupMaskOverlap_3 = charmask.overlap(pillmask, relativeOffset_pilleup_3)
-        if pilleupMaskOverlap_3 then charstate = 1
+        if pilleupMaskOverlap_3
+            charstate = 1
+            smileyextragrowth += 1
         if pilleupMaskOverlap_3 then pilleup_3_dead = 1
         display.blit(gamejs.image.load("images/pill_up.png"),pilleup_pos3)
     
@@ -180,7 +201,7 @@ level4draw = ->
     
     ################drawsprites##################################
     charSprite.rect = new gamejs.Rect([char_x,char_y])
-    
+    smiley_Sprite.rect = new gamejs.Rect([smiley_x,smiley_y])
     smiley_Sprite.draw(display)
     charSprite.draw(display)
   

@@ -1,7 +1,9 @@
 gamejs = require('gamejs')
 
-gamejs.preload(["images/char.png","images/wall.png","images/level1_mapmask.png","images/level2_mapmask.png","images/ldsizes/char64.png","images/ldsizes/char63.png","images/guard.png","images/boss.png","images/smiley.png","images/levelfull_mapmask.png","images/level4_mapmask.png","images/titlescreen.png"
-                "images/ldsizes/char62.png","images/ldsizes/char61.png","images/ldsizes/char60.png","images/ldsizes/char59.png"
+gamejs.preload(["images/char.png","images/wall.png","images/level1_mapmask.png","images/level2_mapmask.png","images/ldsizes/char64.png","images/ldsizes/char63.png","images/guard.png","images/boss.png","images/smiley.png","images/levelfull_mapmask.png","images/level4_mapmask.png","images/titlescreen.png","images/start.png"
+                
+"images/level1text.png","images/level2text.png","images/level3text.png","images/level4text.png","images/level4joke.png","images/end.png","images/gold.png"
+"images/ldsizes/char62.png","images/ldsizes/char61.png","images/ldsizes/char60.png","images/ldsizes/char59.png", "images/endscreen.png"
                 "images/ldsizes/char58.png","images/ldsizes/char57.png","images/ldsizes/char56.png","images/ldsizes/char55.png"
                 "images/ldsizes/char54.png","images/ldsizes/char53.png","images/ldsizes/char52.png","images/ldsizes/char51.png"
                 "images/ldsizes/char50.png","images/ldsizes/char49.png","images/ldsizes/char48.png","images/ldsizes/char47.png"
@@ -98,7 +100,7 @@ pilleup_pos1 = [200,500]
 pilleup_pos2 = [400,500]
 pilleup_pos3 = [600,500]
 
-display = gamejs.display.setMode([800,600])
+display = gamejs.display.setMode([800,750])
 
 
     
@@ -156,10 +158,14 @@ director = ->
         level4()
         levelchecker = 4
 
+    if level == 5 and levelchecker != 5
+        level5()
+        levelchecker = 5
+
     
 startscreen = ->
     display.blit(gamejs.image.load("images/titlescreen.png"),[0,0])
-    display.blit((new gamejs.font.Font("30px cursive","#ffcc00")).render("Press An Arrow Key"),[250,430])
+    display.blit(gamejs.image.load("images/start.png"),[0,400])
     handleEvent(event) for event in gamejs.event.get()
     if key_up == 1 then level = 1
     if key_down == 1 then level = 1
@@ -167,6 +173,7 @@ startscreen = ->
     if key_left == 1 then level = 1
 
 level1 = ->
+    
     ############globals##############
     key_down = 0
     key_up = 0
@@ -201,8 +208,10 @@ level1 = ->
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 200], [32, 200]), 0)
     charSprite.image = gamejs.image.load('images/ldsizes/char100.png')
     gamejs.time.fpsCallback(level1draw, this, 30)
+    display.blit(gamejs.image.load("images/level1text.png"),[0,600])
 
 level1draw = ->
+    
     if key_up == 1 then char_ver_acc -= 0.3
     if key_down == 1 then char_ver_acc += 0.3
     if key_right == 1 then char_hor_acc += 0.3
@@ -229,7 +238,7 @@ level1draw = ->
     charSprite.rect = new gamejs.Rect([char_x,char_y])
     charSprite.draw(display)
 
-
+    
     if char_x > 800
         level = 2
         gamejs.time.deleteCallback(level1draw,30)
@@ -298,6 +307,7 @@ level2 = ->
     gamejs.draw.rect(display, '#000000', new gamejs.Rect([768, 275], [32, 50]), 0)
     charSprite.image = gamejs.image.load("images/char.png")
     gamejs.time.fpsCallback(level2draw, this, 30)
+    display.blit(gamejs.image.load("images/level2text.png"),[0,600])
 
 
 level2draw = ->
@@ -492,6 +502,8 @@ level3 = ->
     guard2_Sprite.image = gamejs.image.load("images/guard.png")
     ###############################################################
     gamejs.time.fpsCallback(level3draw, this, 30)
+
+    display.blit(gamejs.image.load("images/level3text.png"),[0,600])
 
 
 level3draw = ->
@@ -711,6 +723,8 @@ level4 = ->
     ###############################################################
     gamejs.time.fpsCallback(level4draw, this, 30)
 
+    display.blit(gamejs.image.load("images/level4text.png"),[0,600])
+
 
 level4draw = ->
     if charsize < 1 or charsize > 500
@@ -787,6 +801,7 @@ level4draw = ->
     smileyMaskOverlap = charmask.overlap(smileymask, relativeOffset_smiley)
     if smileyMaskOverlap and charsize > 200
         smileydead = 1
+        display.blit(gamejs.image.load("images/level4joke.png"),[0,600])
     if smileyMaskOverlap and charsize <= 200 and smileydead == 0
         gamejs.time.deleteCallback(level4draw,30)
         level4()
@@ -842,10 +857,13 @@ level4draw = ->
     charSprite.draw(display)
   
     #############################################################
-
-
-
-
+    if char_y > 568
+        level = 5
+        gamejs.time.deleteCallback(level4draw,30)
+level5 = ->
+    display.blit(gamejs.image.load("images/endscreen.png"),[0,0])
+    display.blit(gamejs.image.load("images/end.png"),[0,600])
+    
 
 
 
